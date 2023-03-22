@@ -23,7 +23,7 @@ def get_activities_of_type(activity_type: str) -> [str]:
     access_token = load_tokens('strava_tokens.json')[0]
     activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
                   f"access_token={access_token}"
-
+    # TODO: authorization (https://www.grace-dev.com/python-apis/strava-api/)
     return requests.get(activities_url).json()
 
 print(get_activities_of_type("asd"))
