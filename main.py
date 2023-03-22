@@ -11,7 +11,7 @@ def load_tokens(filename: str) -> (str,str):
 
 # Get athlete info in json format
 def get_athlete() -> str:
-    access_token = load_tokens('strava_tokens.json')[0]
+    access_token = load_tokens('strava_data.json')[0]
     athlete_url = f"https://www.strava.com/api/v3/athlete?" \
                   f"access_token={access_token}"
 
@@ -20,7 +20,7 @@ def get_athlete() -> str:
 
 # get list of activities in json format
 def get_activities_of_type(activity_type: str) -> [str]:
-    access_token = load_tokens('strava_tokens.json')[0]
+    access_token = load_tokens('strava_data.json')[0]
     activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
                   f"access_token={access_token}"
     # TODO: authorization (https://www.grace-dev.com/python-apis/strava-api/)

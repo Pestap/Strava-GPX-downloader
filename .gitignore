@@ -133,4 +133,4 @@ dmypy.json
 .idea
 
 # strava sensitive data
-strava_tokens.json
+strava_data.json
