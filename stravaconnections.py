@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 
@@ -47,6 +48,10 @@ class StravaConnection:
                                        'grant_type': 'refresh_token',
                                        'refresh_token': refresh_token})
         return response
+
+    @staticmethod
+    def check_if_token_valid(strava_token):
+        return False if strava_token['expires_at'] < time.time() else True
 
     @staticmethod
     def save_token_to_file(token):
