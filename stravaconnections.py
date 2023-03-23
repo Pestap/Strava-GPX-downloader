@@ -2,7 +2,13 @@ import json
 import time
 
 import requests
-
+# TODO LIST:
+# - find out how long is the authorization code valid (would prefer to authorize every use)
+# - save token as object field
+# - saving in file not needed
+# - every request check if token valid, if not refresh it
+# - functions for sending requests (just for sending, not constructing (that will be done by a separate module))
+# - the other module for constructing requests
 
 class StravaConnection:
     def __init__(self):
