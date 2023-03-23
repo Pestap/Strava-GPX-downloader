@@ -4,16 +4,16 @@ import time
 import requests
 # TODO LIST:
 # - find out how long is the authorization code valid (would prefer to authorize every use)
-# - save token as object field
-# - saving in file not needed
 # - every request check if token valid, if not refresh it
 # - functions for sending requests (just for sending, not constructing (that will be done by a separate module))
 # - the other module for constructing requests
+
 
 class StravaConnection:
     def __init__(self):
         self.__client_id = None
         self.__client_secret = None
+        self.__token = None
         self.redirect_uri = 'https://localhost/'
         self.init_strava_app_data()
 
@@ -33,9 +33,7 @@ class StravaConnection:
         print("Click here to allow the app to gather your data: " + request_url)
         code = input("Please enter the code visible in your browser: ")
 
-        token = self.request_token(code)
-        # TODO: check if valid
-        self.save_token_to_file(token)
+        self.request_token(code)
 
     def request_token(self, code):
         response = requests.post(url='https://www.strava.com/api/v3/oauth/token',
@@ -43,21 +41,39 @@ class StravaConnection:
                                     'client_secret': self.__client_secret,
                                     'code': code,
                                     'grant_type': 'authorization_code'})
-        return response
+        self.saveToken(response)
+        StravaConnection.save_token_to_file(response)
 
     def refresh_token(self):
-        token = self.read_token_from_file()
-        refresh_token = token['refresh_token']
+        refresh_token = self.__token['refresh_token']
         response = requests.post(url='https://www.strava.com/api/v3/oauth/token',
                                  data={'client_id': self.__client_id,
                                        'client_secret': self.__client_secret,
                                        'grant_type': 'refresh_token',
                                        'refresh_token': refresh_token})
-        return response
+        self.saveToken(response)
+        StravaConnection.save_token_to_file(response)
 
-    @staticmethod
-    def check_if_token_valid(strava_token):
-        return False if strava_token['expires_at'] < time.time() else True
+    def saveToken(self, new_token):
+        self.__token = new_token.json();
+
+    def check_if_token_valid(self):
+        if self.__token is None:
+            return False
+        elif self.__token['expires_at'] < time.time():
+            return False
+        else:
+            return True
+
+    def send_request(self, url: str) -> str:
+        # refresh token if needed
+        if not self.check_if_token_valid():
+            self.refresh_token()
+
+        # add authentication token to request
+        request_url = url + f"access_token={self.__token['access_token']}"
+
+        return requests.get(request_url).json()
 
     @staticmethod
     def save_token_to_file(token):
