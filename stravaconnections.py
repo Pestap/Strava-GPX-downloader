@@ -19,8 +19,9 @@ class StravaConnection:
     def init_strava_app_data(self):
         with open('strava_data.json', 'r') as file:
             strava_app_data = json.load(file)
-            self.__client_id = strava_app_data['client_id']
-            self.__client_secret = strava_app_data['client_secret']
+        self.__client_id = strava_app_data['client_id']
+        self.__client_secret = strava_app_data['client_secret']
+        self.authorize()
 
     def authorize(self):
         request_url = f'https://www.strava.com/oauth/authorize?client_id={self.__client_id}' \
@@ -39,7 +40,7 @@ class StravaConnection:
                                     'client_secret': self.__client_secret,
                                     'code': code,
                                     'grant_type': 'authorization_code'})
-        self.saveToken(response)
+        self.save_token(response)
         StravaConnection.save_token_to_file(response)
 
     def refresh_token(self):
@@ -49,11 +50,11 @@ class StravaConnection:
                                        'client_secret': self.__client_secret,
                                        'grant_type': 'refresh_token',
                                        'refresh_token': refresh_token})
-        self.saveToken(response)
+        self.save_token(response)
         StravaConnection.save_token_to_file(response)
 
     # Saves token in memory as json
-    def saveToken(self, new_token):
+    def save_token(self, new_token):
         self.__token = new_token.json();
 
     # Checks if token is valid
@@ -65,12 +66,15 @@ class StravaConnection:
         else:
             return True
 
-
     # Sends a request by adding access_token and refreshing it if needed
     def send_request(self, url: str) -> str:
         # refresh token if needed
         if not self.check_if_token_valid():
             self.refresh_token()
+
+        # check if url ends with ?
+        if url[-1] != "?":
+            url += "?"
 
         # add authentication token to request
         request_url = url + f"access_token={self.__token['access_token']}"

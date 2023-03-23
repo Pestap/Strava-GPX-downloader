@@ -1,6 +1,5 @@
-from stravaconnections import StravaConnection
+from stravaathleterequests import StravaAthleteRequest
 
-
-a = StravaConnection()
-a.authorize()
-print(a.send_request(f"https://www.strava.com/api/v3/athlete/activities?"))
+request = StravaAthleteRequest()
+request.get_current_athlete()
+print(request.athlete)
