@@ -3,8 +3,6 @@ from athletestats import AthleteStats
 
 class Athlete:
     def __init__(self, info: str):
-        print(info)
-        input()
         self.id = info['id']
         self.username = info['username']
         self.firstname = info['firstname']
