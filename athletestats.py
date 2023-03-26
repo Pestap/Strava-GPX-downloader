@@ -7,6 +7,6 @@ class AthleteStats:
         self.longest_ride = json['biggest_ride_distance']
 
     def __str__(self):
-        return  f"All rides: {self.all_rides}" \
-                f"All runs: {self.all_runs}" \
-                f"All swims: {self.all_swims}"
+        return  f"All rides distance: {self.all_rides['distance'] / 1000} km\n" \
+                f"All runs distance: {self.all_runs['distance'] / 1000} km\n" \
+                f"All swims distance: {self.all_swims['distance']} m"
