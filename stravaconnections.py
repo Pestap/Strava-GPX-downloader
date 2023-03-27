@@ -67,14 +67,19 @@ class StravaConnection:
             return True
 
     # Sends a request by adding access_token and refreshing it if needed
-    def send_request(self, url: str) -> str:
+    def send_request(self, url: str, params: list[(str, str)] = []) -> str:
         # refresh token if needed
         if not self.check_if_token_valid():
             self.refresh_token()
 
         # check if url ends with ?
-        if url[-1] != "?":
+
+        if url[-1] != '?':
             url += "?"
+
+        if len(params) != 0:
+            for param in params:
+                url += f"{param[0]}={param[1]}&"
 
         # add authentication token to request
         request_url = url + f"access_token={self.__token['access_token']}"
