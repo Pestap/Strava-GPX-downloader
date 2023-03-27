@@ -74,6 +74,7 @@ class StravaConnection:
 
         # check if url ends with ?
 
+        # TODO: maybe refactor this part with header and params (requests.get)
         if url[-1] != '?':
             url += "?"
 

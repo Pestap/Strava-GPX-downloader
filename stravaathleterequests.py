@@ -18,8 +18,15 @@ class StravaAthleteRequest(StravaRequest):
 
     def get_athlete_activities(self):
         url = f"https://www.strava.com/api/v3/athlete/activities"
-        params = [("per_page", "200")]
+        params = [("per_page", "200"), ()]
         # TODO: dodać pętle do pobierania wszyskich
-
+        # TODO: dodać parametr na typ aktywności, albo dodatkowa funkcja
+        # save all summary_polylines in file (remember to replace \\ with \)
+        # save all id's
+        # no way to export gpx, streams with latitude, longitude, altitude ...
+        # create gpx's from that
+        # or - get lat, long, alt - get middle, get middle nearest surface (overpass API), apply it for distance between two gpx points
+        # from that I can gather data about surfaces
+        #
         response = self.connection.send_request(url, params)
         return response
