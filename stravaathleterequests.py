@@ -1,3 +1,5 @@
+import json
+
 from stravaconnections import StravaConnection
 from stravarequests import StravaRequest
 from athlete import Athlete
@@ -38,5 +40,11 @@ class StravaAthleteRequest(StravaRequest):
             new_page_number = int(params['page']) + 1
             params['page'] = str(new_page_number)
 
+        self.save_activites_to_file(all_activities, 'strava_activities.json')
         return all_activities
-    
+
+
+    def save_activites_to_file(self, activites: list[str], filename: str):
+        with open(filename, 'w') as file:
+            json.dump(activites, file)
+
