@@ -18,7 +18,8 @@ class StravaAthleteRequest(StravaRequest):
 
     def get_athlete_activities(self):
         url = f"https://www.strava.com/api/v3/athlete/activities"
-        params = [("per_page", "200"), ()]
+        params = {"per_page": "200",
+                  "page": "20"}
         # TODO: dodać pętle do pobierania wszyskich
         # TODO: dodać parametr na typ aktywności, albo dodatkowa funkcja
         # save all summary_polylines in file (remember to replace \\ with \)
