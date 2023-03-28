@@ -4,4 +4,6 @@ request = StravaAthleteRequest()
 request.get_current_athlete()
 print(request.athlete)
 
-print(request.get_athlete_activities())
+result = request.get_athlete_activities()
+print(result)
+print(len(result))
