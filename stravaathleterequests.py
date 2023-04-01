@@ -18,7 +18,7 @@ class StravaAthleteRequest(StravaRequest):
         url = f"https://www.strava.com/api/v3/athletes/{self.athlete.id}/stats"
         self.athlete.get_stats(self.connection.send_request(url))
 
-    def get_athlete_activities(self):
+    def get_athlete_activities(self) -> list[str]:
         url = f"https://www.strava.com/api/v3/athlete/activities"
         params = {"per_page": "200",
                   "page": "1"}
@@ -43,6 +43,14 @@ class StravaAthleteRequest(StravaRequest):
         self.save_activites_to_file(all_activities, 'strava_activities.json')
         return all_activities
 
+
+    def get_activities_of_type(self, type: str) -> list[str]:
+        # load activities from file and filter
+        with open('strava_activities.json', 'r') as file:
+            activity_list = json.load(file)
+            filtered_list = list(filter(lambda a: type in a['sport_type'].lower(), activity_list))
+            print(filtered_list)
+            print(len(filtered_list))
 
     def save_activites_to_file(self, activites: list[str], filename: str):
         with open(filename, 'w') as file:
