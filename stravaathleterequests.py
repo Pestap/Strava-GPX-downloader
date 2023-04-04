@@ -40,6 +40,7 @@ class StravaAthleteRequest(StravaRequest):
             new_page_number = int(params['page']) + 1
             params['page'] = str(new_page_number)
 
+        # save activities to file
         self.save_activites_to_file(all_activities, 'strava_activities.json')
         return all_activities
 
@@ -48,12 +49,15 @@ class StravaAthleteRequest(StravaRequest):
         # load activities from file and filter
         with open('strava_activities.json', 'r') as file:
             activity_list = json.load(file)
+
+            # filter list - now only containing choosen type of sport
             filtered_list_iterator = filter(lambda a: (type in a['sport_type'].lower()), activity_list)
 
+            # cast to list
             filtered_list = list(filtered_list_iterator)
 
-            print(filtered_list)
-            print(len(filtered_list))
+            # return result
+            return filtered_list
 
     def save_activites_to_file(self, activites: list[str], filename: str):
         with open(filename, 'w') as file:
