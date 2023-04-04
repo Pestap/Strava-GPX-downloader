@@ -48,7 +48,10 @@ class StravaAthleteRequest(StravaRequest):
         # load activities from file and filter
         with open('strava_activities.json', 'r') as file:
             activity_list = json.load(file)
-            filtered_list = list(filter(lambda a: type in a['sport_type'].lower(), activity_list))
+            filtered_list_iterator = filter(lambda a: (type in a['sport_type'].lower()), activity_list)
+
+            filtered_list = list(filtered_list_iterator)
+
             print(filtered_list)
             print(len(filtered_list))
 
